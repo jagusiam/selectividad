@@ -1,0 +1,86 @@
+package selectividad;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Carrera {
+    // atributos
+    int codigo;
+    int nplazas;
+    
+    // metodo constructor
+    public Carrera (int codigo, int nplazas) {
+        this.codigo = codigo;
+        this.nplazas = nplazas;       
+    }
+    
+    //método cargar datos - desde un fichero
+    public void leerDatos(Carrera carreras[]) {
+        FileInputStream fichero; 
+        BufferedReader buffer;
+        InputStreamReader isr;     
+        
+        try {  
+        fichero = new FileInputStream("‪F:\\AGA\\dam confinamiento\\PROGRAMACIÓN\\7. Selectividad\\fcarreras.txt");
+        isr = new InputStreamReader(fichero, "UTF8");
+        buffer = new BufferedReader(isr);
+        
+        String linea;
+        
+        /*Recorremos el array de carreras para ir alojando en él los datos
+        de los objetos a medida de que vayamos extrayendolos del fichero*/
+        for (int i=0; i<carreras.length; i++) {
+        
+            
+        //Mientras haya una línea en el fichero, el programa la lee  
+            while ((linea = buffer.readLine()) != null) {
+            
+            /*Ya que necesitamos extraer los datos de las carreras por
+            separado troceamos la línea con la función split y alojamos
+            los elementos en un array de Strings*/
+                if (linea.length() != 0) { // filtra líneas en blanco
+                 String datos[] = linea.split(" ");//espacio en blanco es el punto de separación
+                 
+            /*Ahora queremos asignar los elementos extraídos del fichero y 
+                 alojados en el array auxiliar String datos[] a las variables
+                 de la clase Carrera y alojarlos en el array de objetos
+                 Carrera carreras []*/
+            //Las variables son de tipo int - hay que convertir Strings to int
+                        codigo=Integer.parseInt(datos[0]);
+                        nplazas=Integer.parseInt(datos[1]);
+                        
+                //Cargamos los datos en cada celda del array carreras
+                    carreras[i] = new Carrera (codigo, nplazas);  
+                }    
+        
+            }   
+        
+        }
+        
+         buffer.close();   /* cerramos el fichero */
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+     
+                
+    }
+    
+    
+    /*un método creado para comprobar si funciona la carga de fichero 
+    imprimiendo datos por pantalla*/
+    public static void mostrarDatos(Carrera carreras[]) {
+
+        for (Carrera aux : carreras) {
+            System.out.println(" * - * - * - * ");
+            System.out.println("Código: " + aux.codigo + " >> Numero de plazas : " + aux.nplazas);
+        }
+        System.out.println(" * - * - * - * ");
+
+    }
+    
+    
+    
+    
+}
