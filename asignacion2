@@ -1,0 +1,167 @@
+package selectividad2;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * SELECTIVIDAD: El programa asigna las carerras a los candidatos a la universidad 
+ * teniendo en cuenta sus preferencias (tres opciones) realizandolo por orden 
+ * de nota mayor a menor y según las plazas disponibles.
+ * Los datos de los estudiantes y carreras se leen de dos ficheros diferentes.
+ *  -+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ * El programa debe sacar un listado con el dni de cada alumno y la carrera en 
+ * la que queda asignado para matricularse. Si no encuentra plaza en ninguna 
+ * de sus preferencias saldrá en el listado con el código -1.
+ * @author aga
+ */
+public class Asignacion2 {
+    
+    /**
+     *
+     * @param args
+     */
+    public static void main (String [] args) {
+        //Declarar e instanciar el array de objetos de la clase Carrera   
+        Carrera2 carreras[];
+        carreras = new Carrera2[60];
+        
+        //Inicializar carreras
+        Carrera2.inicializar (carreras);
+        
+        Carrera2.leerDatos(carreras);
+        
+        //Declarar e instanciar el array tasignaciones - para alojar resultados
+        TAsignacion tasignaciones [];
+        tasignaciones = new TAsignacion[200];
+        
+        //Inicializar tasignaciones
+        TAsignacion.inicializar (tasignaciones);
+        
+        //variables para manejar el fichero de estudiantes                
+        float nota=-1;
+        int dni=-1;
+        int pref1=-1; 
+        int pref2=-1;
+        int pref3=-1;        
+        
+        //objetos para lectura de ficheros
+        FileInputStream fichero; 
+        
+        BufferedReader buffer;
+        
+        InputStreamReader isr;
+        
+        
+        /*Lectura del fichero festudiantes registro por registro y busqueda de 
+        las plazas disponibles, comparando los códigos en el array carreras, 
+        asignacion de estudiantes a carreras según la disponibilidad */
+        try {  
+        fichero = new FileInputStream("F:\\AGA\\dam confinamiento\\PROGRAMACIÓN\\7. Selectividad\\festudiantes.txt");
+        
+        isr = new InputStreamReader(fichero, "UTF8");
+        
+        buffer = new BufferedReader(isr);
+        
+        String linea;        
+        
+        int celda;//variable auxiliar - celda del array tasignaciones
+        
+        celda = 0;//inicializamos la variable a 0 antes de entrar en el bucle
+        
+        //Mientras haya una línea en el fichero, el programa la lee  
+            while ((linea = buffer.readLine()) != null) {
+            
+            /* Mostramos los elementos - para comprobar la correcta 
+            carga del fichero - ELIMINAR DESPUES*      
+            /* leemos toda una linea y la mostramos */ 
+            System.out.println(" ");
+            System.out.println (" > > > "+ linea);
+            
+            /*Ya que necesitamos extraer los datos de los estudiantes por
+            separado troceamos la línea con la función split y alojamos
+            los elementos en un array de Strings*/
+                if (linea.length() != 0) { // filtra líneas en blanco
+                String datos[] = linea.split(" ");//espacio en blanco es el punto de separación
+            
+                 /* Mostramos los elementos - para comprobar la correcta 
+                división del fichero - ELIMINAR DESPUES*/
+                System.out.print("Nota: ");
+                System.out.println(datos[0]);
+                System.out.print("Dni: ");
+                System.out.println(datos[1]);
+                System.out.print(" Pref1: ");
+                System.out.println(datos[2]);
+                System.out.print(" Pref2: ");
+                System.out.println(datos[3]);
+                System.out.print(" Pref3: ");
+                System.out.println(datos[4]);
+                    
+            /*Las variables son de tipo int (nota - float!) - hay que convertir 
+            Strings to int/float*/
+            nota=Float.parseFloat(datos[0]);
+            dni=Integer.parseInt(datos[1]);
+            pref1=Integer.parseInt(datos[2]);
+            pref2=Integer.parseInt(datos[3]);
+            pref3=Integer.parseInt(datos[4]);
+
+                }    
+        
+        /*Recorrer el fichero de estudiantes y compararlo con el fichero de 
+        carreras para ir asignando carreras a estudiantes según su preferencia*/        
+        
+        //Variables auxiliares
+        int asign;//codigo de carrera asignado al candidato
+        int aux;
+                
+        aux = Carrera2.intentar(pref1, carreras);//llamar al médtodo intentar
+        if (aux != 0) {
+            asign = pref1;
+        } else {
+           aux=Carrera2.intentar(pref2, carreras);
+                   if (aux != 0) {
+                    asign = pref2;
+                   } else {
+                   aux = Carrera2.intentar(pref3, carreras);
+                           if (aux != 0) {
+                           asign = pref3;
+                           } else {
+                           asign = -1;
+                           }
+                   }
+        
+        }
+            
+            //Impresión de los resultados de la asignación
+            System.out.println("El estudiante con el DNI " + dni  + " queda "
+                + "matriculado en la carrera con el código: " + asign);
+                
+            //carga de datos de asignación en un array tasignaciones[] 
+            tasignaciones[celda].dni=dni;
+            tasignaciones[celda].codigo=asign;
+                
+            celda = celda+1; //incrementamos el valor        
+                
+            }   
+       
+        buffer.close();   /* cerramos el fichero */
+        
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+        /*Ordenar los datos resultantes de las asignaciones de las carreras a los 
+        candidatos*/        
+        //LLamar al método de ordenar datos de la clase TAsignacion
+        TAsignacion.ordenarDatos(tasignaciones);
+        
+        
+        /*Escribir los datos de las asignaciones en un fichero de texto*/
+        //Llamar al método de escribir datos en el fichero de la clase TAsignacion
+        TAsignacion.escribirDatos(tasignaciones);   
+     
+    }  //fin de la main
+    
+ 
+} //fin de la clase
