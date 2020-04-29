@@ -1,0 +1,123 @@
+package selectividad2;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * Clase Carrera2 - para gestionar los datos del fichero fcarreras y realizar
+ * las operaciones de asignación de carreras universitarias a los candidatos.
+ * @author aga
+ */
+public class Carrera2 {
+    // atributos
+    int codigo;
+    int nplazas;
+    
+    // metodo constructor
+    public Carrera2 (int codigo, int nplazas) {
+        this.codigo = codigo;
+        this.nplazas = nplazas;       
+    }
+    
+    //método para inicializar el array de carreras
+    public static void inicializar(Carrera2 carreras[]) {
+
+        for (int i = 0; i < carreras.length; i++) {
+
+            carreras[i] = new Carrera2(-1, 999999);
+        }
+    }
+    
+    
+    //método cargar datos - desde un fichero
+    public static void leerDatos(Carrera2 carreras[]) {
+        
+        FileInputStream fichero; 
+        
+        BufferedReader buffer;
+        
+        InputStreamReader isr;
+        
+        int celda=0; //variable auxiliar - celda del array carreras[] 
+        
+        try {  
+        fichero = new FileInputStream("F:\\AGA\\dam confinamiento\\PROGRAMACIÓN\\7. Selectividad\\fcarreras.txt");
+        
+        isr = new InputStreamReader(fichero, "UTF8");
+        
+        buffer = new BufferedReader(isr);
+        
+        String linea;
+                 
+        celda = 0;//inicializamos la variable a 0 antes de entrar en el bucle
+        
+        //Mientras haya una línea en el fichero, el programa la lee 
+        while ((linea = buffer.readLine()) != null) {
+            
+            /* lee toda una linea y la mostramos */
+            System.out.println(" ");
+            System.out.println (" > > > "+ linea);
+            
+            /*Ya que necesitamos extraer los datos de las carreras por
+            separado troceamos la línea con la función split y alojamos
+            los elementos en un array de Strings*/
+                if (linea.length() != 0) { // filtra líneas en blanco
+                String datos[] = linea.split(" ");//espacio en blanco es el punto de separación
+                
+                System.out.print("Código: ");
+                System.out.println(datos[0]);
+                System.out.print("Número plazas: ");
+                System.out.println(datos[1]);
+                
+                int acodigo, anplazas;
+                 
+            /*Ahora queremos asignar los elementos extraídos del fichero y 
+                 alojados en el array auxiliar String datos[] a las variables
+                 de la clase Carrera2 y alojarlos en el array de objetos
+                 Carrera2 carreras []*/
+            //Las variables son de tipo int - hay que convertir Strings to int
+                        acodigo=Integer.parseInt(datos[0]);
+                        anplazas=Integer.parseInt(datos[1]);
+                        
+                //Cargamos los datos en cada celda del array carreras                
+                carreras[celda].codigo = acodigo;
+                carreras[celda].nplazas = anplazas;
+                
+                //O hacerlo todo seguido sin crear variables
+                //carreras [celda].codigo = Integer.parseInt(datos[0]);
+                //carreras [celda].nplazas = Integer.parseInt(datos[1]);
+                
+                }    
+            
+            celda = celda+1; //incrementamos el valor 
+            }   
+        
+               
+            buffer.close();   /* cerramos el fichero */
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+       
+    } //fin método leerDatos
+    
+       
+    
+       public static int intentar (int codigo, Carrera2 carreras[]) {
+        /* El método comprueba si hay plazas disponibles relacionadas a un 
+           código. Si hay decrementa el número de plazas en 1. Y devuelve la 
+           posición (asignado=c) */
+        int asignado = 0;
+        for (int c=0; c<carreras.length; c++) {
+            if ((carreras[c].codigo == codigo) && (carreras[c].nplazas > 0)) {
+                carreras[c].nplazas = carreras[c].nplazas - 1;
+                asignado = c;
+            }
+        }
+        return asignado;
+    } 
+    
+   
+    
+} //fin de la clase
