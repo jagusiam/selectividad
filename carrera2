@@ -29,8 +29,7 @@ public class Carrera2 {
             carreras[i] = new Carrera2(-1, 999999);
         }
     }
-    
-    
+  
     //método cargar datos - desde un fichero
     public static void leerDatos(Carrera2 carreras[]) {
         
@@ -88,23 +87,18 @@ public class Carrera2 {
                 //O hacerlo todo seguido sin crear variables
                 //carreras [celda].codigo = Integer.parseInt(datos[0]);
                 //carreras [celda].nplazas = Integer.parseInt(datos[1]);
-                
                 }    
-            
             celda = celda+1; //incrementamos el valor 
             }   
         
-               
             buffer.close();   /* cerramos el fichero */
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-       
     } //fin método leerDatos
     
-       
     
-       public static int intentar (int codigo, Carrera2 carreras[]) {
+    public static int intentar (int codigo, Carrera2 carreras[]) {
         /* El método comprueba si hay plazas disponibles relacionadas a un 
            código. Si hay decrementa el número de plazas en 1. Y devuelve la 
            posición (asignado=c) */
@@ -117,7 +111,5 @@ public class Carrera2 {
         }
         return asignado;
     } 
-    
-   
-    
+     
 } //fin de la clase
