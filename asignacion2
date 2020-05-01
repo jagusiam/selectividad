@@ -154,7 +154,7 @@ public class Asignacion2 {
         /*Ordenar los datos resultantes de las asignaciones de las carreras a los 
         candidatos*/        
         //LLamar al método de ordenar datos de la clase TAsignacion
-        TAsignacion.ordenarDatos(tasignaciones);
+        TAsignacion.ordenarDatosInsrcDni(tasignaciones);
         
         
         /*Escribir los datos de las asignaciones en un fichero de texto*/
