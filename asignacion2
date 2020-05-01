@@ -53,7 +53,6 @@ public class Asignacion2 {
         
         InputStreamReader isr;
         
-        
         /*Lectura del fichero festudiantes registro por registro y busqueda de 
         las plazas disponibles, comparando los códigos en el array carreras, 
         asignacion de estudiantes a carreras según la disponibilidad */
@@ -130,7 +129,6 @@ public class Asignacion2 {
                            asign = -1;
                            }
                    }
-        
         }
             
             //Impresión de los resultados de la asignación
@@ -156,12 +154,10 @@ public class Asignacion2 {
         //LLamar al método de ordenar datos de la clase TAsignacion
         TAsignacion.ordenarDatosInsrcDni(tasignaciones);
         
-        
         /*Escribir los datos de las asignaciones en un fichero de texto*/
         //Llamar al método de escribir datos en el fichero de la clase TAsignacion
         TAsignacion.escribirDatos(tasignaciones);   
      
     }  //fin de la main
-    
  
 } //fin de la clase
